@@ -1,6 +1,6 @@
 <?php
 
-namespace CarstenWindler\Config;
+namespace CarstenWindler\Config\Exception;
 
 class ConfigErrorException extends \RuntimeException
 {
