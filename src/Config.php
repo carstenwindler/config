@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CarstenWindler\Config;
 
+use CarstenWindler\Config\Exception\ConfigErrorException;
+
 class Config implements ConfigInterface
 {
     /**

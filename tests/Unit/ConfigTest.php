@@ -3,7 +3,7 @@
 namespace CarstenWindler\Config\Tests\Unit;
 
 use CarstenWindler\Config\Config;
-use CarstenWindler\Config\ConfigErrorException;
+use CarstenWindler\Config\Exception\ConfigErrorException;
 use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
@@ -18,7 +18,6 @@ class ConfigTest extends TestCase
     public function test_throws_upon_init_if_file_is_missing()
     {
         $this->expectException(ConfigErrorException::class);
-        $this->expectExceptionMessage('Config nope.php not found');
 
         (new Config)->init(__DIR__ . '/fixture/nope.php');
     }
@@ -26,7 +25,6 @@ class ConfigTest extends TestCase
     public function test_throws_upon_init_if_file_contains_no_array()
     {
         $this->expectException(ConfigErrorException::class);
-        $this->expectExceptionMessage('Config wrong.php not found');
 
         (new Config)->init(__DIR__ . '/fixture/wrong.php');
     }
@@ -56,8 +54,8 @@ class ConfigTest extends TestCase
     {
         $config = (new Config)->init(__DIR__ . '/fixture/main.php');
 
-        TestCase::assertTrue($config->get('lvl1.lvl2.lvl3.foo'));
-        TestCase::assertFalse($config->get('lvl1.lvl2.lvl3.bar'));
+        TestCase::assertTrue($config->has('lvl1.lvl2.lvl3.foo'));
+        TestCase::assertFalse($config->has('lvl1.lvl2.lvl3.bar'));
     }
 
     public function test_set_new_value()
@@ -86,7 +84,27 @@ class ConfigTest extends TestCase
 
         $result = $config->toArray();
 
-        var_dump($result);
+        TestCase::assertEquals(
+            [
+                'lvl1' => [
+                    'test' => 'value',
+                    'lvl2' => [
+                        'foo' => 'bar',
+                        'lvl3' => [
+                            'foo' => 'baz',
+                        ],
+                        'nice' => 'one'
+                        ],
+                ],
+                'merge' => [
+                    'me' => 'yes!',
+                    'recursive' => [
+                        'abso' => 'lutely',
+                    ],
+                ],
+            ],
+            $result
+        );
     }
 
     public function test_merge_config()
