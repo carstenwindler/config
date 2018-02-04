@@ -1,0 +1,24 @@
+{
+  "name": "carstenwindler/config",
+  "description": "Very simple config",
+  "homepage": "https://github.com/carstenwindler/config",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Carsten Windler",
+      "email": "carsten@carstenwindler.de"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^2.7",
+    "phpunit/phpunit": "^6"
+  },
+  "autoload": {
+    "psr-4": {
+      "CarstenWindler\\Config\\": "src/"
+    }
+  }
+}
