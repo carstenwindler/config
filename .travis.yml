@@ -15,5 +15,5 @@ install:
   - composer install
 
 script:
-  - vendor/bin/phpunit -c phpunit-ci.xml --coverage-text
+  - vendor/bin/phpunit -c phpunit.xml --coverage-text
   - vendor/bin/phpcs --standard=PSR2 src/
