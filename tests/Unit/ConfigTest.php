@@ -29,6 +29,50 @@ class ConfigTest extends TestCase
         (new Config)->init(__DIR__ . '/fixture/wrong.php');
     }
 
+    public function test_get_string()
+    {
+        $config = (new Config)->init(__DIR__ . '/fixture/types.php');
+
+        TestCase::assertEquals('somestring', $config->get('string'));
+    }
+
+    public function test_get_boolean()
+    {
+        $config = (new Config)->init(__DIR__ . '/fixture/types.php');
+
+        TestCase::assertTrue($config->get('boolean_true'));
+        TestCase::assertFalse($config->get('boolean_false'));
+    }
+
+    public function test_get_integer()
+    {
+        $config = (new Config)->init(__DIR__ . '/fixture/types.php');
+
+        TestCase::assertEquals(0, $config->get('zero'));
+        TestCase::assertEquals(12345, $config->get('integer'));
+    }
+
+    public function test_get_use_default_string_if_not_set()
+    {
+        $config = (new Config)->init(__DIR__ . '/fixture/main.php');
+
+        TestCase::assertEquals('default', $config->get('not.exist', 'default'));
+    }
+
+    public function test_get_use_default_false_boolean_if_not_set()
+    {
+        $config = (new Config)->init(__DIR__ . '/fixture/main.php');
+
+        TestCase::assertEquals(false, $config->get('not.exist', false));
+    }
+
+    public function test_get_use_default_true_boolean_if_not_set()
+    {
+        $config = (new Config)->init(__DIR__ . '/fixture/main.php');
+
+        TestCase::assertEquals(true, $config->get('not.exist', true));
+    }
+
     public function test_get_lvl1()
     {
         $config = (new Config)->init(__DIR__ . '/fixture/main.php');

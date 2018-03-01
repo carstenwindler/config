@@ -91,7 +91,7 @@ class Config implements ConfigInterface
             $loc = &$loc[$step];
         }
 
-        if (!$loc) {
+        if ($loc === null) {
             return $default;
         }
 
