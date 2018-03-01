@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CarstenWindler\Config;
 
 use CarstenWindler\Config\Exception\ConfigErrorException;
+use CarstenWindler\Config\Exception\ConfigKeyNotSetException;
 
 class Config implements ConfigInterface
 {
@@ -18,11 +19,32 @@ class Config implements ConfigInterface
      */
     private $configPath;
 
+    /**
+     * @var bool
+     */
+    private $strictMode = false;
+
     public function __construct(string $configPath = '', array $configArray = [])
     {
         // TODO check for trailing slash
         $this->configPath = $configPath;
         $this->config = $configArray;
+    }
+
+    /**
+     * Set Config into strict mode, which means: if config keys are NOT set, Config will not
+     * return the default value, but throw an exception.
+     *
+     * You should not activate this in production, but use it in local dev and for CI to
+     * identifiy setup problems.
+     *
+     * @return Config
+     */
+    public function useStrictMode(): Config
+    {
+        $this->strictMode = true;
+
+        return $this;
     }
 
     private function load(string $file): array
@@ -58,11 +80,11 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    public function set(string $path, $value): Config
+    public function set(string $key, $value): Config
     {
         $loc = &$this->config;
 
-        foreach (explode('.', $path) as $step) {
+        foreach (explode('.', $key) as $step) {
             $loc = &$loc[$step];
         }
 
@@ -83,15 +105,19 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    public function get(string $path, $default = null)
+    public function get(string $key, $default = null)
     {
         $loc = &$this->config;
 
-        foreach (explode('.', $path) as $step) {
+        foreach (explode('.', $key) as $step) {
             $loc = &$loc[$step];
         }
 
         if ($loc === null) {
+            if ($this->strictMode) {
+                throw new ConfigKeyNotSetException('Config key ' . $key . ' not set');
+            }
+
             return $default;
         }
 

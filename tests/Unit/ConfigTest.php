@@ -4,6 +4,7 @@ namespace CarstenWindler\Config\Tests\Unit;
 
 use CarstenWindler\Config\Config;
 use CarstenWindler\Config\Exception\ConfigErrorException;
+use CarstenWindler\Config\Exception\ConfigKeyNotSetException;
 use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
@@ -169,4 +170,15 @@ class ConfigTest extends TestCase
         TestCase::assertEquals([ 'new' => 'value' ], $config->toArray());
     }
 
+    public function test_get_key_not_set_in_strict_mode()
+    {
+        $config = (new Config)
+            ->init(__DIR__ . '/fixture/types.php')
+            ->useStrictMode();
+
+        $this->expectException(ConfigKeyNotSetException::class);
+        $this->expectExceptionMessage('Config key notset.in.strict.mode not set');
+
+        $config->get('notset.in.strict.mode');
+    }
 }
