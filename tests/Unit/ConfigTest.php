@@ -181,4 +181,13 @@ class ConfigTest extends TestCase
 
         $config->get('notset.in.strict.mode');
     }
+
+    public function test_has_must_not_throw_in_strict_mode()
+    {
+        $config = (new Config)
+            ->init(__DIR__ . '/fixture/types.php')
+            ->useStrictMode();
+
+        TestCase::assertFalse($config->has('notset.in.strict.mode'));
+    }
 }

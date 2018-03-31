@@ -35,9 +35,6 @@ class Config implements ConfigInterface
      * Set Config into strict mode, which means: if config keys are NOT set, Config will not
      * return the default value, but throw an exception.
      *
-     * You should not activate this in production, but use it in local dev and for CI to
-     * identifiy setup problems.
-     *
      * @return Config
      */
     public function useStrictMode(): Config
@@ -105,7 +102,7 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    public function get(string $key, $default = null)
+    private function getFromConfig(string $key)
     {
         $loc = &$this->config;
 
@@ -113,7 +110,14 @@ class Config implements ConfigInterface
             $loc = &$loc[$step];
         }
 
-        if ($loc === null) {
+        return $loc;
+    }
+
+    public function get(string $key, $default = null)
+    {
+        $item = $this->getFromConfig($key);
+
+        if ($item === null) {
             if ($this->strictMode) {
                 throw new ConfigKeyNotSetException('Config key ' . $key . ' not set');
             }
@@ -121,12 +125,12 @@ class Config implements ConfigInterface
             return $default;
         }
 
-        return $loc;
+        return $item;
     }
 
-    public function has(string $path): bool
+    public function has(string $key): bool
     {
-        return (boolean) $this->get($path);
+        return (boolean) $this->getFromConfig($key);
     }
 
     public function toArray(): array
