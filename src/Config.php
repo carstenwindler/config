@@ -123,9 +123,19 @@ class Config implements ConfigInterface
         return $loc;
     }
 
-    public function has(string $path): bool
+    public function has(string $key): bool
     {
-        return (boolean) $this->get($path);
+        $loc = &$this->config;
+
+        foreach (explode('.', $key) as $step) {
+            if (!array_key_exists($step, $loc)) {
+                return false;
+            }
+
+            $loc = &$loc[$step];
+        }
+
+        return true;
     }
 
     public function toArray(): array

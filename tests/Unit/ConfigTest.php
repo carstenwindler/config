@@ -110,6 +110,13 @@ class ConfigTest extends TestCase
         TestCase::assertFalse($config->has('lvl1.lvl2.lvl3.bar'));
     }
 
+    public function test_has_key_with_null_value()
+    {
+        $config = (new Config)->init(__DIR__ . '/fixture/types.php');
+
+        TestCase::assertTrue($config->has('null'));
+    }
+
     public function test_set_new_value()
     {
         $config = (new Config)->init(__DIR__ . '/fixture/main.php');
@@ -187,6 +194,15 @@ class ConfigTest extends TestCase
         $this->expectExceptionMessage('Config key notset.in.strict.mode not set');
 
         $config->get('notset.in.strict.mode');
+    }
+
+    public function test_has_must_not_throw_in_strict_mode()
+    {
+        $config = (new Config)
+            ->init(__DIR__ . '/fixture/types.php')
+            ->useStrictMode();
+
+        TestCase::assertFalse($config->has('notset.in.strict.mode'));
     }
 
     public function test_get_key_with_value_null_in_strict_mode()
