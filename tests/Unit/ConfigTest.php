@@ -53,6 +53,13 @@ class ConfigTest extends TestCase
         TestCase::assertEquals(12345, $config->get('integer'));
     }
 
+    public function test_get_null()
+    {
+        $config = (new Config)->init(__DIR__ . '/fixture/types.php');
+
+        TestCase::assertNull($config->get('null'));
+    }
+
     public function test_get_use_default_string_if_not_set()
     {
         $config = (new Config)->init(__DIR__ . '/fixture/main.php');
@@ -170,7 +177,7 @@ class ConfigTest extends TestCase
         TestCase::assertEquals([ 'new' => 'value' ], $config->toArray());
     }
 
-    public function test_get_key_not_set_in_strict_mode()
+    public function test_get_key_not_set_in_strict_mode_throws_exception()
     {
         $config = (new Config)
             ->init(__DIR__ . '/fixture/types.php')
@@ -180,5 +187,14 @@ class ConfigTest extends TestCase
         $this->expectExceptionMessage('Config key notset.in.strict.mode not set');
 
         $config->get('notset.in.strict.mode');
+    }
+
+    public function test_get_key_with_value_null_in_strict_mode()
+    {
+        $config = (new Config)
+            ->init(__DIR__ . '/fixture/types.php')
+            ->useStrictMode();
+
+        TestCase::assertNull($config->get('null'));
     }
 }

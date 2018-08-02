@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace CarstenWindler\Config;
 
@@ -110,10 +108,11 @@ class Config implements ConfigInterface
         $loc = &$this->config;
 
         foreach (explode('.', $key) as $step) {
-            $loc = &$loc[$step];
-        }
+            if (array_key_exists($step, $loc)) {
+                $loc = &$loc[$step];
+                continue;
+            }
 
-        if ($loc === null) {
             if ($this->strictMode) {
                 throw new ConfigKeyNotSetException('Config key ' . $key . ' not set');
             }
@@ -141,9 +140,10 @@ class Config implements ConfigInterface
         foreach ($array2 as $key => &$value) {
             if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
                 $merged [$key] = $this->arrayMergeRecursiveDistinct($merged[$key], $value);
-            } else {
-                $merged[$key] = $value;
+                continue;
             }
+
+            $merged[$key] = $value;
         }
 
         return $merged;
