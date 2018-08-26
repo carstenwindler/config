@@ -12,13 +12,13 @@
   "require": {
     "php": ">=7.0.0"
   },
-  "require-dev": {
-    "squizlabs/php_codesniffer": "^2.7",
-    "phpunit/phpunit": "^6"
-  },
   "autoload": {
     "psr-4": {
       "CarstenWindler\\Config\\": "src/"
     }
+  },
+  "require-dev": {
+    "symplify/easy-coding-standard": "^4.6",
+    "phpunit/phpunit": "^6"
   }
 }

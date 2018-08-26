@@ -34,7 +34,7 @@ class Config implements ConfigInterface
      * return the default value, but throw an exception.
      *
      * You should not activate this in production, but use it in local dev and for CI to
-     * identifiy setup problems.
+     * identify setup problems.
      *
      * @return Config
      */
