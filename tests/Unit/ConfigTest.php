@@ -67,6 +67,13 @@ class ConfigTest extends TestCase
         TestCase::assertEquals('default', $config->get('not.exist', 'default'));
     }
 
+    public function test_get_returns_null_if_not_set_and_no_default()
+    {
+        $config = (new Config)->init(__DIR__ . '/fixture/main.php');
+
+        TestCase::assertNull($config->get('not.exist'));
+    }
+
     public function test_get_use_default_false_boolean_if_not_set()
     {
         $config = (new Config)->init(__DIR__ . '/fixture/main.php');
