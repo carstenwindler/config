@@ -7,26 +7,15 @@ use CarstenWindler\Config\Exception\ConfigKeyNotSetException;
 
 class Config implements ConfigInterface
 {
-    /**
-     * @var array
-     */
-    private $config;
-
-    /**
-     * @var string
-     */
+    private $config = [];
     private $configPath;
-
-    /**
-     * @var bool
-     */
     private $strictMode = false;
 
-    public function __construct(string $configPath = '', array $configArray = [])
+    public function setConfigPath(string $configPath): Config
     {
-        // TODO check for trailing slash
         $this->configPath = $configPath;
-        $this->config = $configArray;
+
+        return $this;
     }
 
     /**
@@ -64,16 +53,9 @@ class Config implements ConfigInterface
         return $configArray;
     }
 
-    public function init(string $file): Config
+    public function addConfigFile(string $file): Config
     {
-        $this->setConfig($this->load($file));
-
-        return $this;
-    }
-
-    public function add(string $file): Config
-    {
-        $this->mergeConfig($this->load($file));
+        $this->addConfigArray($this->load($file));
 
         return $this;
     }
@@ -91,13 +73,7 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    public function setConfig(array $config): Config
-    {
-        $this->config = $config;
-        return $this;
-    }
-
-    public function mergeConfig(array $config): Config
+    public function addConfigArray(array $config): Config
     {
         $this->config = $this->arrayMergeRecursiveDistinct($this->config, $config);
         return $this;
@@ -141,6 +117,13 @@ class Config implements ConfigInterface
     public function toArray(): array
     {
         return $this->config;
+    }
+
+    public function clear(): Config
+    {
+        $this->config = [];
+
+        return $this;
     }
 
     private function arrayMergeRecursiveDistinct(array &$array1, array &$array2): array
