@@ -24,8 +24,6 @@ You start with a "main configuration" which is contains basic configuration for 
 
 Unbeatable fast and easy is to use the "array dot" notation to address configuration items (e.g. ```'lvl1.lvl2.lvl3.foo'```).
 
-
-
 This has a big drawback though - the config is addressed using strings, which can lead to "rotting configuration" easily. Checkout below "Strict mode" section on how to fight that.
 
 ## Usage
@@ -36,23 +34,48 @@ There are 3 ways to set the configuration.
 
 #### Load from file
 
+Often enough, application configurations are simply stored in files, so this is the standard use case for Config.
+
+Config uses PHP arrays as the only configuration format. To store arrays in files, you could e.g. use this notation:
+
+```php
+<?php
+
+return [
+    'my_config' => [
+        'key1' => 'value1',
+        'key2' => 'value2',
+    ]
+];
+
+```
+
+> Why just PHP arrays? Because they are simple, powerful, fast and supported out of the box. If you want or need to store your configurations in e.g. YAML format, you would need to add that functionality yourself by simply loading the YAML, convert it to an array and pass it over to Config.
+
+```php
+// load config from file with full path
+$config = (new Config)->addConfigFile('/app/root/config/main_config.php');
+```
+
 ```php
 // set the folder /app/root/config as your configuration folder
-$config = new Config('/app/root/config');
-// initialize the Config class with the array loaded from file /app/root/config/main_config.php
-$config->init('main_config.php');
+$config = (new Config)->setConfigPath('/app/root/config');
+// load config from file /app/root/config/main_config.php
+$config->addConfigFile('main_config.php');
 // additionally, merge the config from /app/root/config/environment/develop.php
-$config->add('environment/develop.php');
+$config->addConfigFile('environment/develop.php');
 ```
 
 #### Load from array
+
+Typically you would use this way to setup the config during tests.
 
 ```php
 $myConfiguration = [
 	'key' => 'value'
 ]
 
-$config = (new Config)->setConfig($myConfiguration);
+$config = (new Config)->addConfigArray($myConfiguration);
 
 $myOtherConfiguration = [
 	'key2' => 'value2'
@@ -62,6 +85,8 @@ $config->mergeConfig($myOtherConfiguration);
 ```
 
 #### Set config directly
+
+Typically you would use this way to setup the config during tests.
 
 ```php
 $config = (new Config)->set('my.config.value.one', 12345);
@@ -82,8 +107,7 @@ $myConfiguration = [
     ],
 ];
 
-$config = new Config();
-$config->setConfig($myConfiguration);
+$config = (new Config)->setConfigArray($myConfiguration);
 
 echo $config->get('lvl1.lvl2.lvl3.foo'); // echoes "baz"
 echo $config->set('lvl1.lvl2.foo', 'bar');
@@ -108,7 +132,7 @@ See section "Strict mode" below for more options!
 
 To avoid using config items in your code base which do not exist, you can turn on the "strict mode". In case a desired value does not exist, Config will throw an exception instead of returning null.
 
-This can reveal problems in your configuartion, however you should probably not enable it on production environments. It is meant to be used locally or during CI builds.
+This can reveal problems in your configuration, however you **should not enable it on production environments**. It is meant to be used locally or during CI builds.
 
 ## Troubleshooting
 
