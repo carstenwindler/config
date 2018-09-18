@@ -2,3 +2,11 @@
 imports:
 - { resource: 'vendor/symplify/easy-coding-standard/config/clean-code.yml' }
 - { resource: 'vendor/symplify/easy-coding-standard/config/psr2.yml' }
+
+parameters:
+  skip:
+    SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff.UnusedVariable:
+    # seems the sniff gets confused with the "magic" happening in Config::has() function
+    # unfortunately I can't disable sniffs per function, so I have to exclude the only relevant class for this sniff
+    # however this should (hopefully) be fixed with v2.0, where get() and has() are not redundant anymore
+    - 'src/Config.php'

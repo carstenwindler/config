@@ -44,7 +44,7 @@ class Config implements ConfigInterface
             throw new ConfigErrorException('Config ' . $file . ' not found');
         }
 
-        $configArray = include($file);
+        $configArray = include $file;
 
         if (!is_array($configArray)) {
             throw new ConfigErrorException('Config ' . $file . ' contains no array');
