@@ -114,9 +114,18 @@ class Config implements ConfigInterface
         return true;
     }
 
-    public function toArray(): array
+    public function getFullConfig(): array
     {
         return $this->config;
+    }
+
+    /**
+     * @deprecated will be removed with version 2.x, use getFullConfig() instead
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->getFullConfig();
     }
 
     public function clear(): Config

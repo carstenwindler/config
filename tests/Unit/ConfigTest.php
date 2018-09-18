@@ -193,6 +193,13 @@ class ConfigTest extends TestCase
         TestCase::assertEquals('value', $config->get('new'));
     }
 
+    public function test_get_full_config()
+    {
+        $config = (new Config)->addConfigArray([ 'new' => 'value' ]);
+
+        TestCase::assertEquals([ 'new' => 'value' ], $config->getFullConfig());
+    }
+
     public function test_to_array()
     {
         $config = (new Config)->addConfigArray([ 'new' => 'value' ]);

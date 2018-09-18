@@ -1,4 +1,4 @@
-# Config
+# Config [![Build Status](https://travis-ci.org/carstenwindler/config.svg?branch=master)](https://travis-ci.org/carstenwindler/config)
 
 Drop dead simple config package. Slim, tested, works from PHP 7.1 upwards, and won't add any other dependencies to your codebase.
 
@@ -10,7 +10,7 @@ This package started as even simplier config class I added to a project once, an
 
 ### Cascading configs
 
-The basic idea behind this Config package is the idea of "Cascading configs": you don't lpad the whole config at once, but build it up step by step.
+The basic idea behind this Config package is the idea of "Cascading configs": you don't load the whole config at once, but build it up step by step.
 
 ```
 main.php
@@ -128,7 +128,27 @@ is_null($config->get('lvl1.lvl2.lvl3.nope')); // true
 
 See section "Strict mode" below for more options!
 
-## Strict mode
+###  More functionality
+
+#### Clear configuration
+
+During tests (other than that I actually see no use case for this), it might be useful to clear the configuration on an existing instance completely using ```clear()```:
+
+```php
+$config->clear(); // this will simply remove all configuration
+```
+
+#### Get the full configuration
+
+Internally, config stores the configuration as array. If you need to get the full configuration at once, you can use ```getFullConfig()```:
+
+```php
+$fullConfig = $config->getFullConfig(); // $fullConfig will be an array, containing all the configuration
+```
+
+## Strict mode (deprecated)
+
+**The strict mode will be removed from this package with the next major version (2.x). It will be replaced by *config-schema*, more information to follow.**
 
 To avoid using config items in your code base which do not exist, you can turn on the "strict mode". In case a desired value does not exist, Config will throw an exception instead of returning null.
 
@@ -138,7 +158,3 @@ This can reveal problems in your configuration, however you **should not enable 
 
 1. What, no yml support out of the box? Are you kidding?
 	No. Yml is a great format, but you might not use it in your project. You can still use YAML loaders like mustangostang/spyc to load the yml as array and pass it over to Config.
-
-## TODO
-
-1. Align function names (e.g. add() and mergeConfig() do basically the same, just from different sources)
