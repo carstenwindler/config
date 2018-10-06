@@ -1,8 +1,33 @@
 # Config
 
-Drop dead simple config package. Slim, tested, works from PHP 7.1 upwards, and won't add any other dependencies to your codebase.
+[![Latest Stable Version](https://poser.pugx.org/carstenwindler/config/v/stable)](https://packagist.org/packages/carstenwindler/config)
+[![Build Status](https://travis-ci.org/carstenwindler/config.svg?branch=master)](https://travis-ci.org/carstenwindler/config)
+[![Minimum PHP Version](https://img.shields.io/packagist/php-v/carstenwindler/config.svg)](https://php.net/)
+[![License](https://poser.pugx.org/carstenwindler/config/license)](https://packagist.org/packages/carstenwindler/config)
+[![Total Downloads](https://poser.pugx.org/carstenwindler/config/downloads)](https://packagist.org/packages/carstenwindler/config)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/carstenwindler/config/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/carstenwindler/config/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/carstenwindler/config/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/carstenwindler/config/?branch=master)
+## About this package
+
+Drop dead simple config package. Use it to bootstrap and access your configuration settings within your PHP application.
+
+Slim, tested, works from PHP 7.1 upwards, and won't add any other dependencies to your codebase.
 
 I know I should have used a better name like "Configuary" or "Configaroo", probably I will change it soon ;-)
+
+### Requirements
+
+* PHP 7.1 (or above)
+
+Yep, that's it.
+
+### Installation
+
+Via composer:
+
+```bash
+$ composer require carstenwindler/config
+```
 
 ## Why one more config package?
 
