@@ -3,3 +3,4 @@ composer.lock
 debug.sh
 build
 vendor
+coverage.clover
