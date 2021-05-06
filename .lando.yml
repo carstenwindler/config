@@ -1,4 +1,0 @@
-name: config
-recipe: lemp
-config:
-  webroot: .

@@ -4,3 +4,4 @@ debug.sh
 build
 vendor
 coverage.clover
+/.phpunit.result.cache
