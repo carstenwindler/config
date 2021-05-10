@@ -20,7 +20,7 @@ jobs:
           tools: composer:v2, cs2pr
 
       - run: composer update --no-progress
-      - run: vendor/bin/phpcs -q --report=checkstyle
+      - run: vendor/bin/ecs check src
 
   test:
     name: Test on ${{ matrix.php }} ${{ matrix.composer-flags }}
