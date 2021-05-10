@@ -1,0 +1,82 @@
+name: Test
+
+on:
+  push: ~
+  pull_request: ~
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: curl, mbstring
+          coverage: none
+          tools: composer:v2, cs2pr
+
+      - run: composer update --no-progress
+      - run: vendor/bin/phpcs -q --report=checkstyle
+
+  test:
+    name: Test on ${{ matrix.php }} ${{ matrix.composer-flags }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['7.3', '7.4']
+        coverage: [true]
+        composer-flags: ['']
+        include:
+          - php: '8.0'
+            coverage: false
+            composer-flags: '--ignore-platform-req=php'
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, mbstring
+          coverage: pcov
+          tools: composer:v2
+
+      - run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: "Use PHPUnit 9.3+ on PHP 8"
+        run: composer require --no-update --dev phpunit/phpunit:^9.3
+        if: "matrix.php == '8.0'"
+
+      - run: composer update --no-progress ${{ matrix.composer-flags }}
+
+      - run: vendor/bin/phpunit --no-coverage
+        if: ${{ !matrix.coverage }}
+
+      - run: vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+        if: ${{ matrix.coverage }}
+
+      - run: php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
+        if: ${{ matrix.coverage }}
+
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: curl, mbstring
+          coverage: none
+          tools: composer:v2
+
+      - run: composer update --no-progress
+      - run: vendor/bin/phpstan analyse -l 4 --no-progress src
