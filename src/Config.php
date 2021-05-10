@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CarstenWindler\Config;
 
@@ -126,7 +128,7 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    private function arrayMergeRecursiveDistinct(array &$array1, array &$array2): array
+    private function arrayMergeRecursiveDistinct(array $array1, array &$array2): array
     {
         $merged = $array1;
 
