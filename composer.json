@@ -20,7 +20,8 @@
   "require-dev": {
     "symplify/easy-coding-standard": "^9",
     "phpunit/phpunit": "^9",
-    "phpstan/phpstan": "^0.12.86"
+    "phpstan/phpstan": "^0.12.86",
+    "scrutinizer/ocular": "^1.8"
   },
   "scripts": {
     "analyze": "vendor/bin/phpstan analyse -l 4 --no-progress src",
