@@ -11,13 +11,11 @@
 
 Drop dead simple config package. Use it to bootstrap and access your configuration settings within your PHP application.
 
-Slim, tested, works from PHP 7.1 upwards, and won't add any other dependencies to your codebase.
-
-I know I should have used a better name like "Configuary" or "Configaroo", probably I will change it soon ;-)
+Slim, tested, works from PHP 7.3 upwards, and won't add any other dependencies to your codebase.
 
 ### Requirements
 
-* PHP 7.1 (or above)
+* PHP 7.3 (or above)
 
 Yep, that's it.
 
@@ -31,7 +29,7 @@ $ composer require carstenwindler/config
 
 ## Why one more config package?
 
-This package started as even simplier config class I added to a project once, and I kept using and improving it. Add some point, I decided to publish it as a package. There are good reasons for using other (bigger) packages for sure, but if you  just need a configuration class that won't add any overhead to your project, it might be the right choice.
+This package started as even simpler config class I added to a project once, and I kept using and improving it. Add some point, I decided to publish it as a package. There are good reasons for using other (bigger) packages for sure, but if you  just need a configuration class that won't add any overhead to your project, it might be the right choice.
 
 ### Cascading configs
 
@@ -98,13 +96,13 @@ Typically you would use this way to setup the config during tests.
 ```php
 $myConfiguration = [
 	'key' => 'value'
-]
+];
 
 $config = (new Config)->addConfigArray($myConfiguration);
 
 $myOtherConfiguration = [
 	'key2' => 'value2'
-]
+];
 
 $config->mergeConfig($myOtherConfiguration);
 ```
